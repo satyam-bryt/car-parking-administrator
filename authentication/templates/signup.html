@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+{% load static %}
+  <head>
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/auth_style.css' %}">
+  </head>
+
+  <body>
+    <div class="container h-100">
+      <div class="d-flex justify-content-center h-100">
+        <div class="user_card">
+          <div class="d-flex justify-content-center">
+            <h3 id="form-title">REGISTER ACCOUNT</h3>
+          </div>
+          <div class="d-flex justify-content-center form_container">
+
+            <form id="id_sign_up_form" method="POST" action="">
+              {% csrf_token %}
+              <div id="id_phone_group" class="input-group">
+                <div class="input-group-append">
+                  <span class="input-group-text"><i class="fas fa-user"></i></span>
+                </div>
+                {{form.phone_number}}
+              </div>
+              <div id="id_email_group" class="input-group mb-2">
+                <div class="input-group-append">
+                  <span class="input-group-text"><i class="fas fa-envelope-square"></i></span>
+                </div>
+                {{form.email}}
+              </div>
+              <div style="text-align: center;" class="my-2"><a href="#" id="id_phone_switch">Have a phone number?</a></div>
+              <div style="text-align: center;" class="my-2"><a href="#" id="id_email_switch">Use email instead?</a></div>
+              <script>
+                $(document).ready(function(){
+                  $("#id_phone_group").hide();
+                  $("#id_email_switch").hide();
+                  $("#id_phone_switch").click(function(){
+                    $("#id_phone_group").show();
+                    $("#id_email_group").hide();
+                    $("#id_phone_switch").hide();
+                    $("#id_email_switch").show();
+                    $("#id_email").val("");
+                  });
+                  $("#id_email_switch").click(function(){
+                    $("#id_phone_group").hide();
+                    $("#id_email_group").show();
+                    $("#id_phone_switch").show();
+                    $("#id_email_switch").hide();
+                    $("#id_phone_number").val("");
+                  });
+                });
+              </script>
+              <div class="input-group mb-2">
+                <div class="input-group-append">
+                  <span class="input-group-text"><i class="fas fa-key"></i></span>
+                </div>
+                {{form.password1}}
+              </div>
+              <div class="input-group mb-2">
+                <div class="input-group-append">
+                  <span class="input-group-text"><i class="fas fa-key"></i></span>
+                </div>
+                {{form.password2}}
+              </div>
+
+              <div class="d-flex justify-content-center mt-3 login_container">
+                <button class="btn login_btn" type="submit">Submit</button>
+              </div>
+            </form>
+          </div>
+          <div>
+            <ul>
+            {% for error, message in form.errors.items %}
+              {{message}}
+            {% endfor %}
+            </ul>
+          </div>
+
+          <div class="mt-4">
+            <div class="d-flex justify-content-center links">
+              Already have an account? <a href="{% url 'login' %}" class="ml-2">Login</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+
+        //Query All input fields
+        var form_fields = document.getElementsByTagName('input')
+        form_fields[1].placeholder = 'Phone Number...';
+        form_fields[2].placeholder = 'Email..';
+        form_fields[3].placeholder = 'Enter password...';
+        form_fields[4].placeholder = 'Re-enter Password...';
+
+
+        for (var field in form_fields) {
+          form_fields[field].className += ' form-control'
+        }
+
+      </script>
+  </body>
+
+</html>

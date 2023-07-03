@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block list %}active{% endblock %}
+
+{% block js_block %}
+    <script type="text/javascript" src="{% static 'js/car_parking_administrator.js' %}"></script>
+{% endblock %}
+{% block content %}
+<button class="btn btn-primary search-button" id="id_search_parking_spot"><i class="fa-solid fa-magnifying-glass"></i></button>
+<div id="id_search_spot_info"></div>
+{% include 'search_spot.html' %}
+<table id="id_table_parking_spots" class="table">
+  <thead>
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col">Latitude</th>
+      <th scope="col">Longitude</th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  <tbody>
+  </tbody>
+</table>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myModalLabel">Reserve <span id="id_parking_spot_name"></span></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="modal-form">
+                    {% csrf_token %}
+                    <input type="hidden" id="user" name="user" value="{{ request.user.id }}">
+                    Base Price per hour - ₹40
+                    <input type="hidden" id="id" name="id" value="">
+                    <div>
+                        <label for="hours">Enter Hours</label>
+                        <input type="number" id="hours" name="hours" min="1" class="form-control">
+                    </div>
+                    <div class="my-2">
+                        <span id="cost"></span>
+                    </div>
+                    <div>
+                        <span id="valid_till"></span>
+                    </div>
+                    <script>
+                        $(document).ready(function() {
+                            $('#hours').on('input', function() {
+                                var hours = $(this).val();
+                                if (hours === '') {
+                                    hours = 0;
+                                }
+                                if (hours > 0) {
+                                    var cost = hours * 40;
+                                    var valid_till = new Date();
+                                    valid_till.setHours(valid_till.getHours() + parseInt(hours));
+                                    $('#cost').html("The total cost is <b>₹" + cost + "</b>");
+                                    var options = {
+                                        day: '2-digit',
+                                        month: 'long',
+                                        year: 'numeric',
+                                        hour: 'numeric',
+                                        minute: '2-digit',
+                                        hour12: true,
+                                        timeZone: 'Asia/Kolkata'
+                                    };
+                                    var formatter = new Intl.DateTimeFormat('en-IN', options);
+                                    var formattedDate = formatter.format(valid_till);
+                                    $('#valid_till').html("Your parking is valid till <b>" + formattedDate + "</b>");
+                                } else {
+                                    $('#cost').text('');
+                                    $('#valid_till').text('');
+                                }
+                            });
+                        });
+                    </script>
+                    <!-- Add more input fields as needed -->
+                    <button type="submit" class="btn btn-primary mt-3">Reserve</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,40 @@
+<div class="modal fade" id="id_search_spot_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="id_search_spot_label">Search Spot</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="id_search_spot_modal_form">
+                    {% csrf_token %}
+                    <input type="hidden" id="user" name="user" value="{{ request.user.id }}">
+                    <div>
+                        <label for="latitude">Enter Latitude</label>
+                        <input type="text" id="latitude" name="latitude" class="form-control is-invalid">
+                        <small id="latitudeHelp" class="form-text text-muted invalid-feedback">
+                            Latitude must be between -90 and 90 and up to 6 decimal places.
+                        </small>
+                    </div>
+                    <div>
+                        <label for="longitude">Enter Longitude</label>
+                        <input type="text" id="longitude" name="longitude" class="form-control is-invalid">
+                        <small id="longitudeHelp" class="form-text text-muted invalid-feedback">
+                            Longitude must be between -180 and 180 and up to 6 decimal places.
+                        </small>
+                    </div>
+                    <div>
+                        <label for="distance">Enter Distance (in meters)</label>
+                        <input type="number" id="distance" name="distance" class="form-control is-invalid" min="1">
+                        <small id="numberHelp" class="form-text text-muted invalid-feedback">
+                            Minimum distance is 100 meters.
+                        </small>
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-3">Search</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
